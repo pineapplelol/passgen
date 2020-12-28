@@ -35,6 +35,7 @@
 
   #logo {
     font-size: 24px;
+    opacity: 1;
   }
 
   #logo span::before {
