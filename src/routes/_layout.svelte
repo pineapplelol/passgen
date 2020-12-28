@@ -1,22 +1,29 @@
 <script lang="ts">
-	import Nav from '../components/Nav.svelte';
+  import Nav from '../components/Nav.svelte';
 
-	export let segment: string;
+  // get random accent color
+  const accents = ['#00ffff', '#F081D8', '#EBC748', '#EF4646'];
+  let accent = accents[Math.floor(Math.random() * accents.length)];
+
+  export let segment: string;
 </script>
 
 <style>
-	main {
-		position: relative;
-		max-width: 56em;
-		background-color: white;
-		padding: 2em;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
+  main {
+    position: relative;
+    max-width: 890px;
+    width: 95%;
+    background-color: inherit;
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
 </style>
 
-<Nav {segment}/>
+<span style={`--accent: ${accent}`}>
+  <Nav {segment} />
 
-<main>
-	<slot></slot>
-</main>
+  <main>
+    <slot />
+  </main>
+</span>
