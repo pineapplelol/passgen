@@ -78,6 +78,18 @@
       font-size: 4em;
     }
   }
+
+  p {
+    opacity: 1;
+    font-size: 20px;
+    font-family: var(--mono);
+    font-weight: 700;
+  }
+
+  p a {
+    opacity: 1;
+    text-decoration: underline;
+  }
 </style>
 
 <svelte:head>
@@ -100,4 +112,11 @@
     {special}
     {randomCasing}
     {numbers} />
+  <p>
+    It would take a hacker
+    <span
+      style="color: var(--accent)">{Math.pow(strength * 0.2, Math.random() * 5 + 3).toFixed(2)}</span>
+    hours to crack this password.
+    <a href="/philosophy">Learn More.</a>
+  </p>
 </div>

@@ -44,7 +44,7 @@
   section {
     display: flex;
     justify-content: space-between;
-    margin-top: 31px;
+    margin: 31px 0 56px 0;
   }
 
   ul {

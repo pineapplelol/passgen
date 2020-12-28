@@ -6,6 +6,7 @@
   export let strength: number;
   export let currentPassword: string;
 
+  // state for applying spinning animation
   let isSpinning = false;
 
   /* create dispatcher */
@@ -69,7 +70,7 @@
     padding-left: 26px;
   }
 
-  #field:focus-within {
+  #field/*:focus-within*/ {
     background-color: #ffffff07;
   }
 
@@ -184,4 +185,5 @@
   </div>
 </section>
 
+<!-- Shadow app container for copying to clipboard -->
 <div id="clipboard" />
