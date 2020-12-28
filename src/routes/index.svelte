@@ -1,9 +1,11 @@
 <script lang="ts">
   import PasswordField from '../components/PasswordField.svelte';
+  import PasswordOptions from '../components/PasswordOptions.svelte';
+
   import generatePassword from '../utils/passgen';
 
   // fill for lack of entropy util
-  const getEntropy = (s: string) => Math.floor(Math.random() * 100);
+  const getEntropy = (s: string): number => Math.floor(Math.random() * 100);
 
   /* state */
 
@@ -21,7 +23,7 @@
 
   /* event handlers */
 
-  function handleGenerate(_) {
+  function handleGenerate(_: any): void {
     currentPassword = generatePassword(
       numWords,
       randomCasing,
@@ -30,10 +32,28 @@
     );
   }
 
-  function handleInput(e: any) {
+  function handleInput(e: any): void {
     currentPassword = e.detail?.newPassword || '';
   }
 
+  function handleOptions(e: any): void {
+    const _isValid = (v: any): any => typeof v !== 'undefined' && v !== null;
+
+    const { newNumWords, newDigits, newUppercase, newSymbols } = e.detail;
+
+    if (_isValid(newNumWords)) {
+      numWords = newNumWords;
+    }
+    if (_isValid(newDigits)) {
+      numbers = newDigits;
+    }
+    if (_isValid(newUppercase)) {
+      randomCasing = newUppercase;
+    }
+    if (_isValid(newSymbols)) {
+      special = newSymbols;
+    }
+  }
   /* calculated state */
 
   $: strength = getEntropy(currentPassword);
@@ -65,8 +85,19 @@
 </svelte:head>
 
 <h1>Generate memorable, secure passwords.</h1>
-<PasswordField
-  on:generate={handleGenerate}
-  on:updateCurrentPassword={handleInput}
-  {currentPassword}
-  {strength} />
+<div role="form" aria-label="generate a password">
+  <PasswordField
+    on:generate={handleGenerate}
+    on:updateCurrentPassword={handleInput}
+    {currentPassword}
+    {strength} />
+  <PasswordOptions
+    on:updateNumWords={handleOptions}
+    on:updateDigits={handleOptions}
+    on:updateSymbols={handleOptions}
+    on:updateUppercase={handleOptions}
+    {numWords}
+    {special}
+    {randomCasing}
+    {numbers} />
+</div>

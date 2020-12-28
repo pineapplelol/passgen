@@ -59,9 +59,18 @@
     background: none;
     border: none;
     font-size: 24px;
+    font-weight: 700;
     color: var(--font);
     font-family: var(--mono);
     padding-left: 26px;
+  }
+
+  #field:focus-within {
+    background-color: #ffffff07;
+  }
+
+  input:focus {
+    outline: none;
   }
 
   button {
@@ -114,7 +123,7 @@
 </style>
 
 <section>
-  <div id="field" role="form" aria-label="generate a password">
+  <div id="field" role="textbox">
     <!-- current password field -->
     <input bind:value={currentPassword} on:input={updateCurrentPassword} />
     <!-- copy to clipboard -->
