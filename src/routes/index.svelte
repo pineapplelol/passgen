@@ -1,21 +1,30 @@
 <script lang="ts">
   import PasswordField from '../components/PasswordField.svelte';
+  import generatePassword from '../utils/passgen';
 
-  const generatePassword = () =>
-    new Array(4)
-      .fill(0)
-      .map((_) =>
-        Math.random()
-          .toString(36)
-          .replace(/[^a-z]+/g, '')
-          .substr(0, 4 + Math.floor(Math.random() * 5)),
-      )
-      .join(' ');
+  const getEntropy = (string: s) => Math.floor(Math.random() * 100);
 
-  let currentPassword: string = generatePassword();
+  let numWords = 4;
+  let randomCasing = false;
+  let numbers = false;
+  let special = false;
+
+  let currentPassword: string = generatePassword(
+    numWords,
+    randomCasing,
+    numbers,
+    special,
+  );
+  let strength: number = getEntropy(currentPassword);
 
   function handleGenerate(_) {
-    currentPassword = generatePassword();
+    currentPassword = generatePassword(
+      numWords,
+      randomCasing,
+      numbers,
+      special,
+    );
+    strength = getEntropy(currentPassword);
   }
 </script>
 
@@ -39,4 +48,4 @@
 </svelte:head>
 
 <h1>Generate memorable, secure passwords.</h1>
-<PasswordField on:generate={handleGenerate} {currentPassword} strength={60} />
+<PasswordField on:generate={handleGenerate} {currentPassword} {strength} />
