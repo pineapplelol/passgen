@@ -1,10 +1,10 @@
 import * as words from '../data/words.json';
 
-const specialChars = ['#', '!', '$', '&', '%', '*', '+', '?', '@', '_'];
+const SPECIAL_CHARS = ['#', '!', '$', '&', '%', '*', '+', '?', '@', '_'];
 
-module.exports = (
+const generatePassword = (
   numWords: number,
-  randomUp: boolean,
+  randomCasing: boolean,
   numbers: boolean,
   special: boolean,
 ) => {
@@ -13,7 +13,7 @@ module.exports = (
 
   for (let i = 0; i < numWords; i += 1) {
     let w = allWords[Math.floor(Math.random() * allWords.length)];
-    if (randomUp && Math.random() <= 0.5)
+    if (randomCasing && Math.random() <= 0.5)
       w = w.charAt(0).toUpperCase() + w.slice(1);
     password += `${w}-`;
   }
@@ -25,9 +25,11 @@ module.exports = (
   }
 
   if (special) {
-    password += specialChars[Math.floor(Math.random() * specialChars.length)];
-    password += specialChars[Math.floor(Math.random() * specialChars.length)];
+    password += SPECIAL_CHARS[Math.floor(Math.random() * SPECIAL_CHARS.length)];
+    password += SPECIAL_CHARS[Math.floor(Math.random() * SPECIAL_CHARS.length)];
   }
 
   return password;
 };
+
+export default generatePassword;
