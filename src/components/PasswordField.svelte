@@ -6,13 +6,17 @@
   export let strength: number;
   export let currentPassword: string;
 
+  let isSpinning = false;
+
   /* create dispatcher */
   const dispatch = createEventDispatcher();
 
   /* dispatchers */
 
   function generatePassword(): void {
+    isSpinning = true;
     dispatch('generate');
+    window.setTimeout(() => (isSpinning = false), 1000);
   }
 
   function updateCurrentPassword(): void {
@@ -81,43 +85,45 @@
     border: none;
     outline: none;
     cursor: pointer;
-    transition: transform 1s;
+    transition: transform 2s;
   }
 
   button:active svg {
-    transform: scale(1.1);
+    transform: scale(1.15, -1);
   }
 
-  button.spin {
+  button.grow:active svg {
+    transform: scale(1.15);
+  }
+
+  button.spin svg {
     transition: none;
-  }
-
-  button.spin:active {
-    animation: spin 1s;
+    animation: spin 1s 1;
+    transform: scale(1, -1);
   }
 
   @-moz-keyframes spin {
     from {
-      -moz-transform: rotate(0deg);
+      -moz-transform: scale(1, -1) rotate(0deg);
     }
     to {
-      -moz-transform: rotate(360deg);
+      -moz-transform: scale(1, -1) rotate(-360deg);
     }
   }
   @-webkit-keyframes spin {
     from {
-      -webkit-transform: rotate(0deg);
+      -webkit-transform: scale(1, -1) rotate(0deg);
     }
     to {
-      -webkit-transform: rotate(360deg);
+      -webkit-transform: scale(1, -1) rotate(-360deg);
     }
   }
   @keyframes spin {
     from {
-      transform: rotate(0deg);
+      transform: scale(1, -1) rotate(0deg);
     }
     to {
-      transform: rotate(360deg);
+      transform: scale(1, -1) rotate(-360deg);
     }
   }
 </style>
@@ -127,7 +133,7 @@
     <!-- current password field -->
     <input bind:value={currentPassword} on:input={updateCurrentPassword} />
     <!-- copy to clipboard -->
-    <button on:click={copyToClipboard}>
+    <button on:click={copyToClipboard} class="grow">
       <svg
         width="24"
         height="24"
@@ -146,12 +152,16 @@
       </svg>
     </button>
     <!-- generate password -->
-    <button on:click={generatePassword} class="spin" type="submit">
+    <button
+      on:click={generatePassword}
+      class={isSpinning ? 'spin' : ''}
+      type="submit">
       <svg
         width="24"
         height="24"
         viewBox="0 0 24 24"
         fill="none"
+        transform="scale(1, -1)"
         xmlns="http://www.w3.org/2000/svg">
         <title>Generate a new password</title>
         <path
