@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
+  import ShadowClipboard from './ShadowClipboard.svelte';
 
   export let strength: number;
   export let currentPassword: string;
@@ -13,8 +14,12 @@
     dispatch('updateCurrentPassword', { newPassword: currentPassword });
   }
 
-  const copyToClipboard = (s: string) => {
-    // copies received string into clipboard
+  const copyToClipboard = () => {
+    const app = new ShadowClipboard({
+      target: document.getElementById('clipboard'),
+      props: { name: currentPassword },
+    });
+    app.$destroy();
   };
 </script>
 
@@ -101,7 +106,7 @@
 <section>
   <div id="field" role="form">
     <input bind:value={currentPassword} on:input={updateCurrentPassword} />
-    <button on:click={generatePassword}>
+    <button on:click={copyToClipboard}>
       <svg
         width="24"
         height="24"
@@ -140,3 +145,5 @@
     <span style={`padding-left: ${strength || 0}%`} />
   </div>
 </section>
+
+<div id="clipboard" />

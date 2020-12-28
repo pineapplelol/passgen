@@ -2,7 +2,7 @@
   import PasswordField from '../components/PasswordField.svelte';
   import generatePassword from '../utils/passgen';
 
-  const getEntropy = (string: s) => Math.floor(Math.random() * 100);
+  const getEntropy = (s: string) => Math.floor(Math.random() * 100);
 
   let numWords = 4;
   let randomCasing = false;
