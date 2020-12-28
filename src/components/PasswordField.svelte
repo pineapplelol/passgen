@@ -9,6 +9,10 @@
     dispatch('generate');
   }
 
+  function updateCurrentPassword() {
+    dispatch('updateCurrentPassword', { newPassword: currentPassword });
+  }
+
   const copyToClipboard = (s: string) => {
     // copies received string into clipboard
   };
@@ -32,6 +36,7 @@
 
   #bar span {
     background-color: var(--green);
+    transition: padding 0.2s ease-in-out;
   }
 
   input {
@@ -52,12 +57,50 @@
     border: none;
     outline: none;
     cursor: pointer;
+    transition: transform 1s;
+  }
+
+  button:active svg {
+    transform: scale(1.1);
+  }
+
+  button.spin {
+    transition: none;
+  }
+
+  button.spin:active {
+    animation: spin 1s;
+  }
+
+  @-moz-keyframes spin {
+    from {
+      -moz-transform: rotate(0deg);
+    }
+    to {
+      -moz-transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes spin {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>
 
 <section>
   <div id="field" role="form">
-    <input value={currentPassword} />
+    <input bind:value={currentPassword} on:input={updateCurrentPassword} />
     <button on:click={generatePassword}>
       <svg
         width="24"
@@ -76,7 +119,7 @@
           fill="currentColor" />
       </svg>
     </button>
-    <button on:click={generatePassword}>
+    <button on:click={generatePassword} class="spin">
       <svg
         width="24"
         height="24"
@@ -94,6 +137,6 @@
     </button>
   </div>
   <div id="bar" role="progressbar">
-    <span style={`width: ${strength || 0}%`} />
+    <span style={`padding-left: ${strength || 0}%`} />
   </div>
 </section>

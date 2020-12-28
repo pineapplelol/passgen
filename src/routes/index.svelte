@@ -15,7 +15,7 @@
     numbers,
     special,
   );
-  let strength: number = getEntropy(currentPassword);
+  let strength: number;
 
   function handleGenerate(_) {
     currentPassword = generatePassword(
@@ -24,8 +24,13 @@
       numbers,
       special,
     );
-    strength = getEntropy(currentPassword);
   }
+
+  function handleInput(e: any) {
+    currentPassword = e.detail?.newPassword || '';
+  }
+
+  $: strength = getEntropy(currentPassword);
 </script>
 
 <style>
@@ -48,4 +53,8 @@
 </svelte:head>
 
 <h1>Generate memorable, secure passwords.</h1>
-<PasswordField on:generate={handleGenerate} {currentPassword} {strength} />
+<PasswordField
+  on:generate={handleGenerate}
+  on:updateCurrentPassword={handleInput}
+  {currentPassword}
+  {strength} />
