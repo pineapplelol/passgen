@@ -1,34 +1,30 @@
-<script>
-  import successkid from 'images/successkid.jpg';
+<script lang="ts">
+  import PasswordField from '../components/PasswordField.svelte';
+
+  const generatePassword = () =>
+    new Array(4)
+      .fill(0)
+      .map((_) =>
+        Math.random()
+          .toString(36)
+          .replace(/[^a-z]+/g, '')
+          .substr(0, 4 + Math.floor(Math.random() * 5)),
+      )
+      .join(' ');
+
+  let currentPassword: string = generatePassword();
+
+  function handleGenerate(_) {
+    currentPassword = generatePassword();
+  }
 </script>
 
 <style>
-  h1,
-  figure,
-  p {
-    text-align: center;
-    margin: 0 auto;
-  }
-
   h1 {
-    font-size: 2.8em;
-    text-transform: uppercase;
+    font-size: 48px;
     font-weight: 700;
     margin: 0 0 0.5em 0;
-  }
-
-  figure {
-    margin: 0 0 1em 0;
-  }
-
-  img {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 0 1em 0;
-  }
-
-  p {
-    margin: 1em auto;
+    line-height: 1.1;
   }
 
   @media (min-width: 480px) {
@@ -42,14 +38,5 @@
   <title>Passgen</title>
 </svelte:head>
 
-<h1>Great success!</h1>
-
-<figure>
-  <img alt="Success Kid" src={successkid} />
-  <figcaption>Have fun with Sapper!</figcaption>
-</figure>
-
-<p>
-  <strong>Try editing this file (src/routes/index.svelte) to test live
-    reloading.</strong>
-</p>
+<h1>Generate memorable, secure passwords.</h1>
+<PasswordField on:generate={handleGenerate} {currentPassword} strength={60} />
