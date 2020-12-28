@@ -2,20 +2,24 @@
   import PasswordField from '../components/PasswordField.svelte';
   import generatePassword from '../utils/passgen';
 
+  // fill for lack of entropy util
   const getEntropy = (s: string) => Math.floor(Math.random() * 100);
+
+  /* state */
+
+  // state for options
 
   let numWords = 4;
   let randomCasing = false;
   let numbers = false;
   let special = false;
 
-  let currentPassword: string = generatePassword(
-    numWords,
-    randomCasing,
-    numbers,
-    special,
-  );
+  // input var
+
+  let currentPassword: string;
   let strength: number;
+
+  /* event handlers */
 
   function handleGenerate(_) {
     currentPassword = generatePassword(
@@ -30,7 +34,15 @@
     currentPassword = e.detail?.newPassword || '';
   }
 
+  /* calculated state */
+
   $: strength = getEntropy(currentPassword);
+  $: currentPassword = generatePassword(
+    numWords,
+    randomCasing,
+    numbers,
+    special,
+  );
 </script>
 
 <style>

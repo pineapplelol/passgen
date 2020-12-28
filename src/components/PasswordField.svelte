@@ -2,19 +2,29 @@
   import { createEventDispatcher } from 'svelte';
   import ShadowClipboard from './ShadowClipboard.svelte';
 
+  /* props */
   export let strength: number;
   export let currentPassword: string;
+
+  /* create dispatcher */
   const dispatch = createEventDispatcher();
 
-  function generatePassword() {
+  /* dispatchers */
+
+  function generatePassword(): void {
     dispatch('generate');
   }
 
-  function updateCurrentPassword() {
+  function updateCurrentPassword(): void {
     dispatch('updateCurrentPassword', { newPassword: currentPassword });
   }
 
-  const copyToClipboard = () => {
+  /* utils */
+
+  /**
+   * copies contents of `currentPassword` state to clipboard
+   */
+  const copyToClipboard = (): void => {
     const app = new ShadowClipboard({
       target: document.getElementById('clipboard'),
       props: { name: currentPassword },
@@ -104,8 +114,10 @@
 </style>
 
 <section>
-  <div id="field" role="form">
+  <div id="field" role="form" aria-label="generate a password">
+    <!-- current password field -->
     <input bind:value={currentPassword} on:input={updateCurrentPassword} />
+    <!-- copy to clipboard -->
     <button on:click={copyToClipboard}>
       <svg
         width="24"
@@ -124,7 +136,8 @@
           fill="currentColor" />
       </svg>
     </button>
-    <button on:click={generatePassword} class="spin">
+    <!-- generate password -->
+    <button on:click={generatePassword} class="spin" type="submit">
       <svg
         width="24"
         height="24"
@@ -141,7 +154,13 @@
       </svg>
     </button>
   </div>
-  <div id="bar" role="progressbar">
+  <!-- entropy rating -->
+  <div
+    id="bar"
+    role="progressbar"
+    aria-valuenow={strength || 0}
+    aria-valuemin="0"
+    aria-valuemax="100">
     <span style={`padding-left: ${strength || 0}%`} />
   </div>
 </section>
