@@ -5,6 +5,10 @@
   --color: #ffffff;
   --bg-color: #1e2531;
 
+  /* breakpoints */
+  --wide-wrap: 1080px;
+  --narrow-wrap: 890px;
+
   /* fonts */
   --monospace: 'Anonymous Pro', menlo, courier, inconsolata, monospace;
   --sans-serif: 'Poppins', Roboto, -apple-system, BlinkMacSystemFont, Segoe UI,
@@ -12,6 +16,7 @@
 }
 
 body {
+  width: 100%;
   margin: 0;
   font-family: var(--monospace);
   font-size: 14px;
@@ -42,7 +47,13 @@ p {
 }
 
 a {
+  text-decoration: none;
   color: inherit;
+  opacity: 0.75;
+}
+
+a:hover {
+  opacity: 1;
 }
 
 code {
