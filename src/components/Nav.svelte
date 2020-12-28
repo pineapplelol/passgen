@@ -4,9 +4,12 @@
 
 <style>
   nav {
-    border-bottom: 1px solid rgba(255, 62, 0, 0.1);
-    font-weight: 300;
-    padding: 0 1em;
+    display: flex;
+    margin: 42px auto 67px;
+    max-width: var(--wide-wrap);
+    width: 97.5%;
+    justify-content: space-between;
+    align-items: center;
   }
 
   ul {
@@ -14,56 +17,50 @@
     padding: 0;
   }
 
-  /* clearfix */
-  ul::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
-
   li {
-    display: block;
-    float: left;
+    display: inline-block;
+    margin-left: 30px;
+    font-size: 16px;
   }
 
   [aria-current] {
     position: relative;
     display: inline-block;
-  }
-
-  [aria-current]::after {
-    position: absolute;
-    content: '';
-    width: calc(100% - 1em);
-    height: 2px;
-    background-color: rgb(255, 62, 0);
-    display: block;
-    bottom: -1px;
+    opacity: 1;
   }
 
   a {
-    text-decoration: none;
-    padding: 1em 0.5em;
     display: block;
+  }
+
+  #logo {
+    font-size: 24px;
+  }
+
+  #logo span::before {
+    content: '*';
+    margin-right: 0.5em;
+    color: var(--accent);
   }
 </style>
 
 <nav>
+  <a href="/" id="logo"><span>passgen</span></a>
   <ul>
     <li>
       <a
         aria-current={segment === undefined ? 'page' : undefined}
-        href=".">home</a>
+        href="/">home</a>
     </li>
     <li>
       <a
         aria-current={segment === 'philosophy' ? 'page' : undefined}
-        href="philosophy">Philosophy</a>
+        href="/philosophy">philosophy</a>
     </li>
     <li>
       <a
         aria-current={segment === 'privacy' ? 'page' : undefined}
-        href="privacy">Privacy</a>
+        href="/privacy">privacy</a>
     </li>
   </ul>
 </nav>
