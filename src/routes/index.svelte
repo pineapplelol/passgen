@@ -5,7 +5,18 @@
   import generatePassword from '../utils/passgen';
 
   // fill for lack of entropy util
-  const getEntropy = (s: string): number => Math.floor(Math.random() * 100);
+  const getEntropy = (
+    numWords: number,
+    randomCasing: boolean,
+    numbers: boolean,
+    special: boolean,
+  ): number => {
+    const base = randomCasing ? 14000 : 7000;
+    let possibilities = Math.pow(base, numWords);
+    if (numbers) possibilities *= 100;
+    if (special) possibilities *= 100;
+    return Math.log2(possibilities);
+  };
 
   /* state */
 
@@ -19,7 +30,7 @@
   // input var
 
   let currentPassword: string;
-  let strength: number;
+  let entropy: number;
 
   /* event handlers */
 
@@ -56,7 +67,7 @@
   }
   /* calculated state */
 
-  $: strength = getEntropy(currentPassword);
+  $: entropy = getEntropy(numWords, randomCasing, numbers, special);
   $: currentPassword = generatePassword(
     numWords,
     randomCasing,
@@ -102,7 +113,7 @@
     on:generate={handleGenerate}
     on:updateCurrentPassword={handleInput}
     {currentPassword}
-    {strength} />
+    {entropy} />
   <PasswordOptions
     on:updateNumWords={handleOptions}
     on:updateDigits={handleOptions}
@@ -114,9 +125,8 @@
     {numbers} />
   <p>
     It would take a hacker
-    <span
-      style="color: var(--accent)">{Math.pow(strength * 0.2, Math.random() * 5 + 3).toFixed(2)}</span>
+    <span style="color: var(--accent)">{entropy}</span>
     hours to crack this password.
-    <a href="/philosophy">Learn More.</a>
+    <a href="/philosophy">Learn More</a>.
   </p>
 </div>
