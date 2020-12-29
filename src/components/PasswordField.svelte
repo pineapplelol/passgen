@@ -3,7 +3,7 @@
   import ShadowClipboard from './ShadowClipboard.svelte';
 
   /* props */
-  export let hackTime: number;
+  export let prettyHackTime: string;
   export let currentPassword: string;
 
   // state for applying spinning animation
@@ -178,10 +178,10 @@
   <div
     id="bar"
     role="progressbar"
-    aria-valuenow={hackTime || 0}
+    aria-valuenow={prettyHackTime || '0'}
     aria-valuemin="0"
     aria-valuemax="100">
-    <span style={`padding-left: ${hackTime || 0}%`} />
+    <span style={`padding-left: ${prettyHackTime || '0'}%`} />
   </div>
 </section>
 

@@ -27,6 +27,10 @@
     return +years.toFixed(2);
   };
 
+  const numberWithCommas = (x: number): string => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   /* state */
 
   // state for options
@@ -41,6 +45,7 @@
   let currentPassword: string;
   let possibilities: number;
   let hackTime: number;
+  let prettyHackTime: string;
 
   /* event handlers */
 
@@ -79,6 +84,7 @@
 
   $: possibilities = getPossiblities(numWords, randomCasing, numbers, special);
   $: hackTime = getHackTime(possibilities);
+  $: prettyHackTime = numberWithCommas(hackTime);
   $: currentPassword = generatePassword(
     numWords,
     randomCasing,
@@ -124,7 +130,7 @@
     on:generate={handleGenerate}
     on:updateCurrentPassword={handleInput}
     {currentPassword}
-    {hackTime} />
+    {prettyHackTime} />
   <PasswordOptions
     on:updateNumWords={handleOptions}
     on:updateDigits={handleOptions}
@@ -136,7 +142,7 @@
     {numbers} />
   <p>
     It would take a hacker
-    <span style="color: var(--accent)">{hackTime}</span>
+    <span style="color: var(--accent)">{prettyHackTime}</span>
     years to crack this password.
     <a href="/philosophy">Learn More</a>.
   </p>
