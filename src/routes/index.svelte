@@ -4,8 +4,7 @@
 
   import generatePassword from '../utils/passgen';
 
-  // fill for lack of entropy util
-  const getEntropy = (
+  const getPossiblities = (
     numWords: number,
     randomCasing: boolean,
     numbers: boolean,
@@ -15,7 +14,17 @@
     let possibilities = Math.pow(base, numWords);
     if (numbers) possibilities *= 100;
     if (special) possibilities *= 100;
-    return Math.log2(possibilities);
+    return possibilities;
+  };
+
+  const getHackTime = (possibilities: number): number => {
+    const triesPerSecond = 100000;
+    const seconds = possibilities / triesPerSecond;
+    const hours = seconds / 3600;
+    const days = hours / 24;
+    const weeks = days / 7;
+    const years = weeks / 52;
+    return +years.toFixed(2);
   };
 
   /* state */
@@ -30,7 +39,8 @@
   // input var
 
   let currentPassword: string;
-  let entropy: number;
+  let possibilities: number;
+  let hackTime: number;
 
   /* event handlers */
 
@@ -67,7 +77,8 @@
   }
   /* calculated state */
 
-  $: entropy = getEntropy(numWords, randomCasing, numbers, special);
+  $: possibilities = getPossiblities(numWords, randomCasing, numbers, special);
+  $: hackTime = getHackTime(possibilities);
   $: currentPassword = generatePassword(
     numWords,
     randomCasing,
@@ -113,7 +124,7 @@
     on:generate={handleGenerate}
     on:updateCurrentPassword={handleInput}
     {currentPassword}
-    {entropy} />
+    {hackTime} />
   <PasswordOptions
     on:updateNumWords={handleOptions}
     on:updateDigits={handleOptions}
@@ -125,8 +136,8 @@
     {numbers} />
   <p>
     It would take a hacker
-    <span style="color: var(--accent)">{entropy}</span>
-    hours to crack this password.
+    <span style="color: var(--accent)">{hackTime}</span>
+    years to crack this password.
     <a href="/philosophy">Learn More</a>.
   </p>
 </div>
