@@ -3,7 +3,7 @@
   import ShadowClipboard from './ShadowClipboard.svelte';
 
   /* props */
-  export let strength: number;
+  export let entropy: number;
   export let currentPassword: string;
 
   // state for applying spinning animation
@@ -178,10 +178,10 @@
   <div
     id="bar"
     role="progressbar"
-    aria-valuenow={strength || 0}
+    aria-valuenow={entropy || 0}
     aria-valuemin="0"
     aria-valuemax="100">
-    <span style={`padding-left: ${strength || 0}%`} />
+    <span style={`padding-left: ${entropy || 0}%`} />
   </div>
 </section>
 
