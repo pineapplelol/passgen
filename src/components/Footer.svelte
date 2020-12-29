@@ -27,8 +27,10 @@
     {new Date().getFullYear()}
     pineapple.lol
   </a>
-  <a href="https://vercel.com" rel="noopener noreferrer" target="_blank">powered
-    by<svg
+  <a
+    href="https://vercel.com?utm_source=pineapplelol&utm_campaign=oss"
+    rel="noopener noreferrer"
+    target="_blank">powered by<svg
       width="116"
       height="100"
       viewBox="0 0 116 100"
