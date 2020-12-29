@@ -57,6 +57,15 @@ a:hover {
   opacity: 1;
 }
 
+span.page p {
+  line-height: 2;
+}
+
+span.page a {
+  opacity: 1;
+  text-decoration: underline;
+}
+
 code {
   font-family: var(--monospace);
   font-size: calc(1em - 2px);

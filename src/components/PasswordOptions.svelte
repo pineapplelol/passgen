@@ -78,7 +78,12 @@
 
   input[type='checkbox'] {
     appearance: none;
+    -webkit-appearance: none;
     position: relative;
+  }
+
+  input[type='checkbox']:focus {
+    outline: none;
   }
 
   input[type='checkbox']::after {
@@ -90,6 +95,7 @@
     height: 22px;
     border: 2px solid;
     border-radius: 4px;
+    border-color: white;
   }
 
   input[type='checkbox']:checked::after {

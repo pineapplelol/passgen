@@ -4,4 +4,7 @@
 
 <h1>Privacy</h1>
 
-<p>This is the 'Privacy' page. There's not much here.</p>
+<p>
+  This site collects no data from you, and all passwords that are generated are
+  kept only on the client side.
+</p>
