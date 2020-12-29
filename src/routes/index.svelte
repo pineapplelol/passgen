@@ -5,6 +5,7 @@
   import generatePassword from '../utils/passgen';
 
   const getPossiblities = (
+    password: string,
     numWords: number,
     randomCasing: boolean,
     numbers: boolean,
@@ -14,13 +15,17 @@
     let possibilities = Math.pow(base, numWords);
     if (numbers) possibilities *= 100;
     if (special) possibilities *= 100;
+    for (const x of additionalChar) {
+      if (x === '+') possibilities *= (password.length - 1) * 72;
+      if (x === '-') possibilities *= password.length;
+    }
     return possibilities;
   };
 
   const getScaledEntropy = (possibilities: number): number => {
     const entropy = Math.log2(possibilities);
     const maxEntropy = 80;
-    if (entropy > maxEntropy) return maxEntropy;
+    if (entropy > maxEntropy) return 100;
     return (entropy / maxEntropy) * 100;
   };
 
@@ -46,6 +51,7 @@
   let randomCasing = false;
   let numbers = false;
   let special = false;
+  let additionalChar = [];
 
   // input var
 
@@ -63,9 +69,14 @@
       numbers,
       special,
     );
+    additionalChar = [];
   }
 
   function handleInput(e: any): void {
+    if (e.detail?.newPassword.length > currentPassword.length)
+      additionalChar.push('+');
+    if (e.detail?.newPassword.length < currentPassword.length)
+      additionalChar.push('-');
     currentPassword = e.detail?.newPassword || '';
   }
 
@@ -89,7 +100,13 @@
   }
   /* calculated state */
 
-  $: possibilities = getPossiblities(numWords, randomCasing, numbers, special);
+  $: possibilities = getPossiblities(
+    currentPassword,
+    numWords,
+    randomCasing,
+    numbers,
+    special,
+  );
   $: entropy = getScaledEntropy(possibilities);
   $: hackTime = getHackTime(possibilities);
   $: prettyHackTime = numberWithCommas(hackTime);
