@@ -4,8 +4,39 @@
 
   import generatePassword from '../utils/passgen';
 
-  // fill for lack of entropy util
-  const getEntropy = (s: string): number => Math.floor(Math.random() * 100);
+  const getPossiblities = (
+    numWords: number,
+    randomCasing: boolean,
+    numbers: boolean,
+    special: boolean,
+  ): number => {
+    const base = randomCasing ? 14000 : 7000;
+    let possibilities = Math.pow(base, numWords);
+    if (numbers) possibilities *= 100;
+    if (special) possibilities *= 100;
+    return possibilities;
+  };
+
+  const getScaledEntropy = (possibilities: number): number => {
+    const entropy = Math.log2(possibilities);
+    const maxEntropy = 80;
+    if (entropy > maxEntropy) return maxEntropy;
+    return (entropy / maxEntropy) * 100;
+  };
+
+  const getHackTime = (possibilities: number): number => {
+    const triesPerSecond = 100000;
+    const seconds = possibilities / triesPerSecond;
+    const hours = seconds / 3600;
+    const days = hours / 24;
+    const weeks = days / 7;
+    const years = weeks / 52;
+    return +years.toFixed(2);
+  };
+
+  const numberWithCommas = (x: number): string => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
 
   /* state */
 
@@ -19,7 +50,9 @@
   // input var
 
   let currentPassword: string;
-  let strength: number;
+  let possibilities: number;
+  let hackTime: number;
+  let prettyHackTime: string;
 
   /* event handlers */
 
@@ -56,7 +89,10 @@
   }
   /* calculated state */
 
-  $: strength = getEntropy(currentPassword);
+  $: possibilities = getPossiblities(numWords, randomCasing, numbers, special);
+  $: entropy = getScaledEntropy(possibilities);
+  $: hackTime = getHackTime(possibilities);
+  $: prettyHackTime = numberWithCommas(hackTime);
   $: currentPassword = generatePassword(
     numWords,
     randomCasing,
@@ -102,7 +138,7 @@
     on:generate={handleGenerate}
     on:updateCurrentPassword={handleInput}
     {currentPassword}
-    {strength} />
+    {entropy} />
   <PasswordOptions
     on:updateNumWords={handleOptions}
     on:updateDigits={handleOptions}
@@ -114,9 +150,8 @@
     {numbers} />
   <p>
     It would take a hacker
-    <span
-      style="color: var(--accent)">{Math.pow(strength * 0.2, Math.random() * 5 + 3).toFixed(2)}</span>
-    hours to crack this password.
-    <a href="/philosophy">Learn More.</a>
+    <span style="color: var(--accent)">{prettyHackTime}</span>
+    years to crack this password.
+    <a href="/philosophy">Learn More</a>.
   </p>
 </div>
