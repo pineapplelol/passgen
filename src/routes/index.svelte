@@ -17,6 +17,10 @@
     return possibilities;
   };
 
+  const getEntropy = (possibilities: number): number => {
+    return Math.log2(possibilities);
+  };
+
   const getHackTime = (possibilities: number): number => {
     const triesPerSecond = 100000;
     const seconds = possibilities / triesPerSecond;
@@ -83,6 +87,7 @@
   /* calculated state */
 
   $: possibilities = getPossiblities(numWords, randomCasing, numbers, special);
+  $: entropy = getEntropy(possibilities);
   $: hackTime = getHackTime(possibilities);
   $: prettyHackTime = numberWithCommas(hackTime);
   $: currentPassword = generatePassword(
@@ -130,7 +135,7 @@
     on:generate={handleGenerate}
     on:updateCurrentPassword={handleInput}
     {currentPassword}
-    {prettyHackTime} />
+    {entropy} />
   <PasswordOptions
     on:updateNumWords={handleOptions}
     on:updateDigits={handleOptions}
