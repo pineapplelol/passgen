@@ -30,8 +30,8 @@
   };
 
   const getHackTime = (possibilities: number): number => {
-    const triesPerSecond = 100000;
-    const seconds = possibilities / triesPerSecond;
+    const hashesPerSecond = 1124000;
+    const seconds = possibilities / hashesPerSecond;
     const hours = seconds / 3600;
     const days = hours / 24;
     const weeks = days / 7;
