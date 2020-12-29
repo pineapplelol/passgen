@@ -17,8 +17,11 @@
     return possibilities;
   };
 
-  const getEntropy = (possibilities: number): number => {
-    return Math.log2(possibilities);
+  const getScaledEntropy = (possibilities: number): number => {
+    const entropy = Math.log2(possibilities);
+    const maxEntropy = 80;
+    if (entropy > maxEntropy) return maxEntropy;
+    return (entropy / maxEntropy) * 100;
   };
 
   const getHackTime = (possibilities: number): number => {
@@ -87,7 +90,7 @@
   /* calculated state */
 
   $: possibilities = getPossiblities(numWords, randomCasing, numbers, special);
-  $: entropy = getEntropy(possibilities);
+  $: entropy = getScaledEntropy(possibilities);
   $: hackTime = getHackTime(possibilities);
   $: prettyHackTime = numberWithCommas(hackTime);
   $: currentPassword = generatePassword(

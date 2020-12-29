@@ -180,7 +180,7 @@
     role="progressbar"
     aria-valuenow={entropy || 0}
     aria-valuemin="0"
-    aria-valuemax="120">
+    aria-valuemax="100">
     <span style={`padding-left: ${entropy || 0}%`} />
   </div>
 </section>
