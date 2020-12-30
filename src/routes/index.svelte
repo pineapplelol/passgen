@@ -29,14 +29,17 @@
     return (entropy / maxEntropy) * 100;
   };
 
-  const getHackTime = (possibilities: number): number => {
-    const hashesPerSecond = 1124000;
+  const getHackTime = (possibilities: number): [number, string] => {
+    const hashesPerSecond = 1100000;
     const seconds = possibilities / hashesPerSecond;
     const hours = seconds / 3600;
+    if (hours < 24) return [+hours.toFixed(2), 'hours'];
     const days = hours / 24;
+    if (days < 7) return [+days.toFixed(2), 'days'];
     const weeks = days / 7;
+    if (weeks < 52) return [+weeks.toFixed(2), 'weeks'];
     const years = weeks / 52;
-    return +years.toFixed(2);
+    return [+years.toFixed(2), 'years'];
   };
 
   const numberWithCommas = (x: number): string => {
@@ -57,7 +60,7 @@
 
   let currentPassword: string;
   let possibilities: number;
-  let hackTime: number;
+  let hackTime: [number, string];
   let prettyHackTime: string;
 
   /* event handlers */
@@ -109,7 +112,7 @@
   );
   $: entropy = getScaledEntropy(possibilities);
   $: hackTime = getHackTime(possibilities);
-  $: prettyHackTime = numberWithCommas(hackTime);
+  $: prettyHackTime = `${numberWithCommas(hackTime[0])} ${hackTime[1]}`;
   $: currentPassword = generatePassword(
     numWords,
     randomCasing,
@@ -168,7 +171,7 @@
   <p>
     It would take a hacker
     <span style="color: var(--accent)">{prettyHackTime}</span>
-    years to crack this password.
+    to crack this password.
     <a href="/philosophy">Learn More</a>.
   </p>
 </div>
