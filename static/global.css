@@ -41,10 +41,10 @@ h1 {
   font-size: 2em;
 }
 
-p {
+p, ul {
   font-family: var(--sans-serif);
   font-weight: 400;
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
 a {
