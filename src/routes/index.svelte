@@ -78,8 +78,8 @@
     special,
     additionalChar,
   );
-  $: entropy = getScaledEntropy(possibilities);
-  $: hackTime = getHackTime(possibilities);
+  $: entropy = getScaledEntropy(possibilities, 80);
+  $: hackTime = getHackTime(possibilities, 1100000);
   $: prettyHackTime = `${numberWithCommas(hackTime[0])} ${hackTime[1]}`;
   $: currentPassword = generatePassword(
     numWords,
