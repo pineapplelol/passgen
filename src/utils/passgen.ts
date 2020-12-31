@@ -3,14 +3,12 @@ import * as words from '../data/words.json';
 const SPECIAL_CHARS = ['#', '!', '$', '&', '%', '*', '+', '?', '@', '_'];
 
 /**
- * returns a randomly generated password
- *
- * @param {number} numWords - number of words to generate in the password
- * @param {boolean} randomCasing - are characters randomly cased
- * @param {boolean} numbers - are numbers included
- * @param {boolean} special - are special characters included
+ * Generates a random password from the word dictionary and given options.
+ * @param {number} numWords - number of words to include in the password
+ * @param {boolean} randomCasing - if each word should have a 50% chance of starting with an uppercase letter
+ * @param {boolean} numbers - if numbers should be appended in the form `-[][]`
+ * @param {boolean} special - if special characters should be appended in the form `[][]`
  */
-
 const generatePassword = (
   numWords: number,
   randomCasing: boolean,
