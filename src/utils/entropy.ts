@@ -32,9 +32,9 @@ const getHackTime = (possibilities: number): [number, string] => {
   const days = hours / 24;
   if (days < 7) return [+days.toFixed(2), 'days'];
   const weeks = days / 7;
-  if (weeks < 52) return [+weeks.toFixed(2), 'weeks'];
+  if (weeks < 52) return [+weeks.toFixed(0), 'weeks'];
   let years = weeks / 52;
-  return [+years.toFixed(2), 'years'];
+  return [+years.toFixed(0), 'years'];
 };
 
 export { getPossiblities, getScaledEntropy, getHackTime };
