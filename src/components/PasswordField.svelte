@@ -80,7 +80,7 @@
     padding-left: 26px;
   }
 
-  #field/*:focus-within*/ {
+  #field {
     background-color: #ffffff07;
   }
 
@@ -135,6 +135,13 @@
     }
     to {
       transform: scale(1, -1) rotate(-360deg);
+    }
+  }
+
+  @media (max-width: 830px) {
+    input {
+      font-size: 18px;
+      padding-left: 16px;
     }
   }
 </style>
@@ -192,7 +199,7 @@
     aria-valuemin="0"
     aria-valuemax="100">
     <span
-      style={`padding-left: ${entropy || 0}%; background-color: ${entropyColor}`} />
+      style={`width: ${entropy || 0}%; background-color: ${entropyColor}`} />
   </div>
 </section>
 

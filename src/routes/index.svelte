@@ -91,7 +91,7 @@
 
 <style>
   h1 {
-    font-size: 48px;
+    font-size: 2em;
     font-weight: 700;
     margin: 0 0 0.5em 0;
     line-height: 1.1;
@@ -113,6 +113,16 @@
   p a {
     opacity: 1;
     text-decoration: underline;
+  }
+
+  p > br {
+    display: none;
+  }
+
+  @media (max-width: 830px) {
+    p > br {
+      display: block;
+    }
   }
 </style>
 
@@ -139,7 +149,7 @@
   <p>
     It would take a hacker
     <span style="color: var(--accent)">{prettyHackTime}</span>
-    to crack this password.
+    to crack this password.<br />
     <a href="/philosophy">Learn More</a>.
   </p>
 </div>

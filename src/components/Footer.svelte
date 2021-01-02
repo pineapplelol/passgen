@@ -3,7 +3,7 @@
     display: flex;
     margin: 0 auto;
     max-width: var(--wide-wrap);
-    width: 97.5%;
+    width: 95%;
     justify-content: space-between;
     align-items: center;
     padding: 42px 0;
