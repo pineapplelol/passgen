@@ -5,6 +5,8 @@
   --color: #ffffff;
   --bg-color: #1e2531;
   --green: #49ea6c;
+  --yellow: #ebc748;
+  --red: #ef4646;
 
   /* breakpoints */
   --wide-wrap: 1080px;
@@ -41,7 +43,8 @@ h1 {
   font-size: 2em;
 }
 
-p, ul {
+p,
+ul {
   font-family: var(--sans-serif);
   font-weight: 400;
   opacity: 0.65;
