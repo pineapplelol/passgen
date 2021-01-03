@@ -7,7 +7,7 @@
     display: flex;
     margin: 42px auto 67px;
     max-width: var(--wide-wrap);
-    width: 97.5%;
+    width: 95%;
     justify-content: space-between;
     align-items: center;
   }
@@ -43,12 +43,26 @@
     margin-right: 0.5em;
     color: var(--accent);
   }
+
+  @media (max-width: 830px) {
+    #home-link {
+      display: none;
+    }
+
+    ul {
+      text-align: right;
+    }
+
+    ul > li > a {
+      text-align: right;
+    }
+  }
 </style>
 
 <nav>
   <a href="/" id="logo"><span>passgen</span></a>
   <ul>
-    <li>
+    <li id="home-link">
       <a
         aria-current={segment === undefined ? 'page' : undefined}
         href="/">home</a>

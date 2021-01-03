@@ -165,6 +165,24 @@
     cursor: pointer;
     border: none;
   }
+
+  @media (max-width: 800px) {
+    section {
+      display: block;
+    }
+
+    section ul {
+      margin-bottom: 1em;
+    }
+
+    section ul > li {
+      display: inline-block;
+    }
+
+    section ul > li label {
+      font-size: 14px;
+    }
+  }
 </style>
 
 <section>

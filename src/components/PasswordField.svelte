@@ -24,6 +24,14 @@
     dispatch('updateCurrentPassword', { newPassword: currentPassword });
   }
 
+  let entropyColor = 'inherit';
+
+  function getColorFromEntropy(entropy: number): string {
+    if (entropy > 60) return 'var(--green)';
+    if (entropy < 30) return 'var(--red)';
+    return 'var(--yellow)';
+  }
+
   /* utils */
 
   /**
@@ -36,6 +44,8 @@
     });
     app.$destroy();
   };
+
+  $: entropyColor = getColorFromEntropy(entropy);
 </script>
 
 <style>
@@ -70,7 +80,7 @@
     padding-left: 26px;
   }
 
-  #field/*:focus-within*/ {
+  #field {
     background-color: #ffffff07;
   }
 
@@ -127,6 +137,13 @@
       transform: scale(1, -1) rotate(-360deg);
     }
   }
+
+  @media (max-width: 830px) {
+    input {
+      font-size: 18px;
+      padding-left: 16px;
+    }
+  }
 </style>
 
 <section>
@@ -181,7 +198,8 @@
     aria-valuenow={entropy || 0}
     aria-valuemin="0"
     aria-valuemax="100">
-    <span style={`padding-left: ${entropy || 0}%`} />
+    <span
+      style={`width: ${entropy || 0}%; background-color: ${entropyColor}`} />
   </div>
 </section>
 
