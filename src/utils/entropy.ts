@@ -29,7 +29,21 @@ const getKerckhoffsPossibilities = (
 };
 
 const getRandomPossibilities = (password: string): number => {
-  return password.length ** 72;
+  let charset = 26;
+  if (
+    password.toLowerCase() !== password &&
+    password.toUpperCase() !== password
+  ) {
+    charset += 26;
+  }
+  if (/\d/.test(password)) {
+    charset += 10;
+  }
+  const strippedPass = password.replace(/[^A-Za-z0-9]/g, '');
+  if (strippedPass !== password) {
+    charset += 10;
+  }
+  return charset ** password.length;
 };
 
 const getPossibilities = (
@@ -76,7 +90,11 @@ const getHackTime = (
   hashesPerSecond: number,
 ): [number, string] => {
   const seconds = possibilities / hashesPerSecond;
-  const hours = seconds / 3600;
+  if (seconds < 1) return [Number.NaN, 'no time at all'];
+  if (seconds < 60) return [+seconds.toFixed(2), 'seconds'];
+  const minutes = seconds / 60;
+  if (minutes < 60) return [+minutes.toFixed(2), 'minutes'];
+  const hours = minutes / 3600;
   if (hours < 24) return [+hours.toFixed(2), 'hours'];
   const days = hours / 24;
   if (days < 7) return [+days.toFixed(2), 'days'];

@@ -56,18 +56,10 @@
 
     const { newNumWords, newDigits, newUppercase, newSymbols } = e.detail;
 
-    if (_isValid(newNumWords)) {
-      numWords = newNumWords;
-    }
-    if (_isValid(newDigits)) {
-      numbers = newDigits;
-    }
-    if (_isValid(newUppercase)) {
-      randomCasing = newUppercase;
-    }
-    if (_isValid(newSymbols)) {
-      special = newSymbols;
-    }
+    if (_isValid(newNumWords)) numWords = newNumWords;
+    if (_isValid(newDigits)) numbers = newDigits;
+    if (_isValid(newUppercase)) randomCasing = newUppercase;
+    if (_isValid(newSymbols)) special = newSymbols;
   }
   /* calculated state */
 
@@ -82,7 +74,9 @@
   $: entropy = getEntropy(possibilities);
   $: scaledEntropy = getScaledEntropy(entropy, 80);
   $: hackTime = getHackTime(possibilities, 1100000);
-  $: prettyHackTime = `${numberWithCommas(hackTime[0])} ${hackTime[1]}`;
+  $: prettyHackTime = !isNaN(hackTime[0])
+    ? `${numberWithCommas(hackTime[0])} ${hackTime[1]}`
+    : hackTime[1];
   $: currentPassword = generatePassword(
     numWords,
     randomCasing,
