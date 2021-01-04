@@ -9,7 +9,7 @@
  * @param {Array<string>} additionalChar - a list of modifications made to the password, with + representing
  *                         an additional character and - representing a removal
  */
-const getPossiblities = (
+const getKerckhoffsPossibilities = (
   password: string,
   numWords: number,
   randomCasing: boolean,
@@ -18,7 +18,7 @@ const getPossiblities = (
   additionalChar: Array<string>,
 ): number => {
   const base = randomCasing ? 14000 : 7000;
-  let possibilities = Math.pow(base, numWords);
+  let possibilities = base ** numWords;
   if (numbers) possibilities *= 100;
   if (special) possibilities *= 100;
   for (const x of additionalChar) {
@@ -28,16 +28,40 @@ const getPossiblities = (
   return possibilities;
 };
 
+const getRandomPossibilities = (password: string): number => {
+  return password.length ** 72;
+};
+
+const getPossibilities = (
+  password: string,
+  numWords: number,
+  randomCasing: boolean,
+  numbers: boolean,
+  special: boolean,
+  additionalChar: Array<string>,
+): number => {
+  const kerckhoff = getKerckhoffsPossibilities(
+    password,
+    numWords,
+    randomCasing,
+    numbers,
+    special,
+    additionalChar,
+  );
+  const random = getRandomPossibilities(password);
+  return Math.min(kerckhoff, random);
+};
+
+const getEntropy = (possibilities: number): number => {
+  return Math.log2(possibilities);
+};
+
 /**
  * Returns the scaled entropy value from a scale of 0-100
  * @param {number} possibilities - number of possible variations of the password
  * @param {number} maxEntropy - max entropy value
  */
-const getScaledEntropy = (
-  possibilities: number,
-  maxEntropy: number,
-): number => {
-  const entropy = Math.log2(possibilities);
+const getScaledEntropy = (entropy: number, maxEntropy: number): number => {
   if (entropy > maxEntropy) return 100;
   return (entropy / maxEntropy) * 100;
 };
@@ -62,4 +86,4 @@ const getHackTime = (
   return [+years.toFixed(0), 'years'];
 };
 
-export { getPossiblities, getScaledEntropy, getHackTime };
+export { getPossibilities, getEntropy, getScaledEntropy, getHackTime };

@@ -4,7 +4,8 @@
 
   import generatePassword from '../utils/passgen';
   import {
-    getPossiblities,
+    getPossibilities,
+    getEntropy,
     getScaledEntropy,
     getHackTime,
   } from '../utils/entropy';
@@ -70,7 +71,7 @@
   }
   /* calculated state */
 
-  $: possibilities = getPossiblities(
+  $: possibilities = getPossibilities(
     currentPassword,
     numWords,
     randomCasing,
@@ -78,7 +79,8 @@
     special,
     additionalChar,
   );
-  $: entropy = getScaledEntropy(possibilities, 80);
+  $: entropy = getEntropy(possibilities);
+  $: scaledEntropy = getScaledEntropy(entropy, 80);
   $: hackTime = getHackTime(possibilities, 1100000);
   $: prettyHackTime = `${numberWithCommas(hackTime[0])} ${hackTime[1]}`;
   $: currentPassword = generatePassword(
@@ -136,7 +138,7 @@
     on:generate={handleGenerate}
     on:updateCurrentPassword={handleInput}
     {currentPassword}
-    {entropy} />
+    {scaledEntropy} />
   <PasswordOptions
     on:updateNumWords={handleOptions}
     on:updateDigits={handleOptions}
