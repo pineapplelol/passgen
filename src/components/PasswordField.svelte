@@ -2,6 +2,8 @@
   import { createEventDispatcher } from 'svelte';
   import ShadowClipboard from './ShadowClipboard.svelte';
 
+  import { getColorFromEntropy } from '../utils/entropy';
+
   /* props */
   export let scaledEntropy: number;
   export let currentPassword: string;
@@ -25,12 +27,6 @@
   }
 
   let entropyColor = 'inherit';
-
-  function getColorFromEntropy(entropy: number): string {
-    if (entropy > 60) return 'var(--green)';
-    if (entropy < 30) return 'var(--red)';
-    return 'var(--yellow)';
-  }
 
   /* utils */
 

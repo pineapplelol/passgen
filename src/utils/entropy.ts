@@ -124,4 +124,16 @@ const getHackTime = (
   return [+years.toFixed(0), 'years'];
 };
 
-export { getPossibilities, getEntropy, getScaledEntropy, getHackTime };
+const getColorFromEntropy = (entropy: number): string => {
+  if (entropy > 60) return 'var(--green)';
+  if (entropy < 30) return 'var(--red)';
+  return 'var(--yellow)';
+};
+
+export {
+  getPossibilities,
+  getEntropy,
+  getScaledEntropy,
+  getHackTime,
+  getColorFromEntropy,
+};

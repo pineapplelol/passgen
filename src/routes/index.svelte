@@ -8,6 +8,7 @@
     getEntropy,
     getScaledEntropy,
     getHackTime,
+    getColorFromEntropy,
   } from '../utils/entropy';
 
   const numberWithCommas = (x: number): string => {
@@ -19,8 +20,8 @@
   // state for options
 
   let numWords = 4;
-  let randomCasing = false;
-  let numbers = false;
+  let randomCasing = true;
+  let numbers = true;
   let special = false;
   let additionalChar = [];
 
@@ -30,6 +31,8 @@
   let possibilities: number;
   let hackTime: [number, string];
   let prettyHackTime: string;
+
+  let entropyColor = 'inherit';
 
   /* event handlers */
 
@@ -83,6 +86,7 @@
     numbers,
     special,
   );
+  $: entropyColor = getColorFromEntropy(scaledEntropy);
 </script>
 
 <style>
@@ -144,7 +148,7 @@
     {numbers} />
   <p>
     It would take a hacker
-    <span style="color: var(--accent)">{prettyHackTime}</span>
+    <span style={`color: ${entropyColor}`}>{prettyHackTime}</span>
     to crack this password.<br />
     <a href="/philosophy">Learn More</a>.
   </p>
