@@ -1,6 +1,6 @@
 /**
- * Will generate how many variations of the given password and settings are possible.
- * The beginning calculation before entropy.
+ * Will generate how many variations of the given password and settings are possible, assuming
+ * that everything is known about the system that generated the password.
  * @param {string} password - the password that's generated
  * @param {number} numWords - the number of words that are pulled from the dictionary
  * @param {boolean} randomCasing - whether or not random uppercasing was used
@@ -28,6 +28,11 @@ const getKerckhoffsPossibilities = (
   return possibilities;
 };
 
+/**
+ * Will generate how many variations of the given password are possible given the charset
+ * of the password and no prior information about the generation system.
+ * @param {string} password - the password that's generated
+ */
 const getRandomPossibilities = (password: string): number => {
   let charset = 26;
   if (
@@ -46,6 +51,17 @@ const getRandomPossibilities = (password: string): number => {
   return charset ** password.length;
 };
 
+/**
+ * Returns the minimum number of possible variations of a given password
+ * given both the options of knowledge and no knowledge of the system
+ * @param {string} password - the password that's generated
+ * @param {number} numWords - the number of words that are pulled from the dictionary
+ * @param {boolean} randomCasing - whether or not random uppercasing was used
+ * @param {boolean} numbers - whether or not numbers were included
+ * @param {boolean} special - whether or not special characters were included
+ * @param {Array<string>} additionalChar - a list of modifications made to the password, with + representing
+ *                         an additional character and - representing a removal
+ */
 const getPossibilities = (
   password: string,
   numWords: number,
@@ -66,13 +82,17 @@ const getPossibilities = (
   return Math.min(kerckhoff, random);
 };
 
+/**
+ * Returns the entropy of the password given number of possible variations that exist
+ * @param {number} possibilities - number of variations of the password that are possible
+ */
 const getEntropy = (possibilities: number): number => {
   return Math.log2(possibilities);
 };
 
 /**
  * Returns the scaled entropy value from a scale of 0-100
- * @param {number} possibilities - number of possible variations of the password
+ * @param {number} entropy - entropy of the password
  * @param {number} maxEntropy - max entropy value
  */
 const getScaledEntropy = (entropy: number, maxEntropy: number): number => {
@@ -81,7 +101,7 @@ const getScaledEntropy = (entropy: number, maxEntropy: number): number => {
 };
 
 /**
- * Returns how long it would take a hacker to crack a passord.
+ * Returns how long it would take a hacker to crack a passord
  * @param {number} possibilities - number of possible variations of the password
  * @param {number} hashesPerSecond - the number of password attempts per second
  */
