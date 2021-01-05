@@ -188,6 +188,15 @@
 <section>
   <ul role="group">
     <li>
+      <label for="uppercase">
+        <input
+          type="checkbox"
+          name="uppercase"
+          id="uppercase"
+          bind:checked={randomCasing}
+          on:input={(e) => updateOptionsReducer(e)} />Uppercase</label>
+    </li>
+    <li>
       <label for="digits">
         <input
           type="checkbox"
@@ -205,15 +214,6 @@
           bind:checked={special}
           on:input={(e) => updateOptionsReducer(e)} />Symbols</label>
     </li>
-    <li>
-      <label for="uppercase">
-        <input
-          type="checkbox"
-          name="uppercase"
-          id="uppercase"
-          bind:checked={randomCasing}
-          on:input={(e) => updateOptionsReducer(e)} />Uppercase</label>
-    </li>
   </ul>
   <label for="num-words">
     <input
@@ -222,7 +222,7 @@
       bind:value={numWords}
       on:input={(e) => updateOptionsReducer(e)}
       min={2}
-      max={20}
+      max={15}
       id="num-words" /><span id="pseudo-bar" /><span /><span id="label">
       {numWords < 10 ? ' ' : ''}{numWords || ' 2'}
       Words</span></label>

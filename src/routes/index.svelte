@@ -4,9 +4,11 @@
 
   import generatePassword from '../utils/passgen';
   import {
-    getPossiblities,
+    getPossibilities,
+    getEntropy,
     getScaledEntropy,
     getHackTime,
+    getColorFromEntropy,
   } from '../utils/entropy';
 
   const numberWithCommas = (x: number): string => {
@@ -18,8 +20,8 @@
   // state for options
 
   let numWords = 4;
-  let randomCasing = false;
-  let numbers = false;
+  let randomCasing = true;
+  let numbers = true;
   let special = false;
   let additionalChar = [];
 
@@ -29,6 +31,8 @@
   let possibilities: number;
   let hackTime: [number, string];
   let prettyHackTime: string;
+
+  let entropyColor = 'inherit';
 
   /* event handlers */
 
@@ -55,22 +59,14 @@
 
     const { newNumWords, newDigits, newUppercase, newSymbols } = e.detail;
 
-    if (_isValid(newNumWords)) {
-      numWords = newNumWords;
-    }
-    if (_isValid(newDigits)) {
-      numbers = newDigits;
-    }
-    if (_isValid(newUppercase)) {
-      randomCasing = newUppercase;
-    }
-    if (_isValid(newSymbols)) {
-      special = newSymbols;
-    }
+    if (_isValid(newNumWords)) numWords = newNumWords;
+    if (_isValid(newDigits)) numbers = newDigits;
+    if (_isValid(newUppercase)) randomCasing = newUppercase;
+    if (_isValid(newSymbols)) special = newSymbols;
   }
   /* calculated state */
 
-  $: possibilities = getPossiblities(
+  $: possibilities = getPossibilities(
     currentPassword,
     numWords,
     randomCasing,
@@ -78,15 +74,19 @@
     special,
     additionalChar,
   );
-  $: entropy = getScaledEntropy(possibilities, 80);
+  $: entropy = getEntropy(possibilities);
+  $: scaledEntropy = getScaledEntropy(entropy, 80);
   $: hackTime = getHackTime(possibilities, 1100000);
-  $: prettyHackTime = `${numberWithCommas(hackTime[0])} ${hackTime[1]}`;
+  $: prettyHackTime = !isNaN(hackTime[0])
+    ? `${numberWithCommas(hackTime[0])} ${hackTime[1]}`
+    : hackTime[1];
   $: currentPassword = generatePassword(
     numWords,
     randomCasing,
     numbers,
     special,
   );
+  $: entropyColor = getColorFromEntropy(scaledEntropy);
 </script>
 
 <style>
@@ -136,7 +136,7 @@
     on:generate={handleGenerate}
     on:updateCurrentPassword={handleInput}
     {currentPassword}
-    {entropy} />
+    {scaledEntropy} />
   <PasswordOptions
     on:updateNumWords={handleOptions}
     on:updateDigits={handleOptions}
@@ -148,7 +148,7 @@
     {numbers} />
   <p>
     It would take a hacker
-    <span style="color: var(--accent)">{prettyHackTime}</span>
+    <span style={`color: ${entropyColor}`}>{prettyHackTime}</span>
     to crack this password.<br />
     <a href="/philosophy">Learn More</a>.
   </p>

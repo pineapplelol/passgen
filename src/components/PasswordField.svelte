@@ -2,8 +2,10 @@
   import { createEventDispatcher } from 'svelte';
   import ShadowClipboard from './ShadowClipboard.svelte';
 
+  import { getColorFromEntropy } from '../utils/entropy';
+
   /* props */
-  export let entropy: number;
+  export let scaledEntropy: number;
   export let currentPassword: string;
 
   // state for applying spinning animation
@@ -26,12 +28,6 @@
 
   let entropyColor = 'inherit';
 
-  function getColorFromEntropy(entropy: number): string {
-    if (entropy > 60) return 'var(--green)';
-    if (entropy < 30) return 'var(--red)';
-    return 'var(--yellow)';
-  }
-
   /* utils */
 
   /**
@@ -45,7 +41,7 @@
     app.$destroy();
   };
 
-  $: entropyColor = getColorFromEntropy(entropy);
+  $: entropyColor = getColorFromEntropy(scaledEntropy);
 </script>
 
 <style>
@@ -195,11 +191,11 @@
   <div
     id="bar"
     role="progressbar"
-    aria-valuenow={entropy || 0}
+    aria-valuenow={scaledEntropy || 0}
     aria-valuemin="0"
     aria-valuemax="100">
     <span
-      style={`width: ${entropy || 0}%; background-color: ${entropyColor}`} />
+      style={`width: ${scaledEntropy || 0}%; background-color: ${entropyColor}`} />
   </div>
 </section>
 
