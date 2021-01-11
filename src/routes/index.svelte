@@ -23,10 +23,9 @@
   let randomCasing = true;
   let numbers = true;
   let special = false;
-  let additionalChar = [];
 
   // input var
-
+  let generatedPassword: string;
   let currentPassword: string;
   let possibilities: number;
   let hackTime: [number, string];
@@ -37,20 +36,16 @@
   /* event handlers */
 
   function handleGenerate(_: any): void {
-    currentPassword = generatePassword(
+    generatedPassword = generatePassword(
       numWords,
       randomCasing,
       numbers,
       special,
     );
-    additionalChar = [];
+    currentPassword = generatedPassword;
   }
 
   function handleInput(e: any): void {
-    if (e.detail?.newPassword.length > currentPassword.length)
-      additionalChar.push('+');
-    if (e.detail?.newPassword.length < currentPassword.length)
-      additionalChar.push('-');
     currentPassword = e.detail?.newPassword || '';
   }
 
@@ -67,12 +62,12 @@
   /* calculated state */
 
   $: possibilities = getPossibilities(
+    generatedPassword,
     currentPassword,
     numWords,
     randomCasing,
     numbers,
     special,
-    additionalChar,
   );
   $: entropy = getEntropy(possibilities);
   $: scaledEntropy = getScaledEntropy(entropy, 80);
@@ -80,13 +75,14 @@
   $: prettyHackTime = !isNaN(hackTime[0])
     ? `${numberWithCommas(hackTime[0])} ${hackTime[1]}`
     : hackTime[1];
-  $: currentPassword = generatePassword(
+  $: entropyColor = getColorFromEntropy(scaledEntropy);
+  $: generatedPassword = generatePassword(
     numWords,
     randomCasing,
     numbers,
     special,
   );
-  $: entropyColor = getColorFromEntropy(scaledEntropy);
+  $: currentPassword = generatedPassword;
 </script>
 
 <style>

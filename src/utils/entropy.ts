@@ -1,30 +1,29 @@
 /**
  * Will generate how many variations of the given password and settings are possible, assuming
  * that everything is known about the system that generated the password.
+ * @param {string} originalPassword - the original password that's generated
  * @param {string} password - the password that's generated
  * @param {number} numWords - the number of words that are pulled from the dictionary
  * @param {boolean} randomCasing - whether or not random uppercasing was used
  * @param {boolean} numbers - whether or not numbers were included
  * @param {boolean} special - whether or not special characters were included
- * @param {Array<string>} additionalChar - a list of modifications made to the password, with + representing
- *                         an additional character and - representing a removal
  */
 const getKerckhoffsPossibilities = (
+  originalPassword: string,
   password: string,
   numWords: number,
   randomCasing: boolean,
   numbers: boolean,
   special: boolean,
-  additionalChar: Array<string>,
 ): number => {
   const base = randomCasing ? 14000 : 7000;
   let possibilities = base ** numWords;
   if (numbers) possibilities *= 100;
   if (special) possibilities *= 100;
-  for (const x of additionalChar) {
-    if (x === '+') possibilities *= (password.length - 1) * 72;
-    if (x === '-') possibilities *= password.length;
-  }
+
+  const lengthDiff = (password.length - originalPassword.length) * 72;
+  if (lengthDiff > 0) possibilities *= lengthDiff;
+  if (lengthDiff < 0) possibilities /= Math.abs(lengthDiff);
   return possibilities;
 };
 
@@ -54,29 +53,28 @@ const getRandomPossibilities = (password: string): number => {
 /**
  * Returns the minimum number of possible variations of a given password
  * given both the options of knowledge and no knowledge of the system
- * @param {string} password - the password that's generated
+ * @param {string} originalPassword - the original password that's generated
+ * @param {string} password - the new password that's generated
  * @param {number} numWords - the number of words that are pulled from the dictionary
  * @param {boolean} randomCasing - whether or not random uppercasing was used
  * @param {boolean} numbers - whether or not numbers were included
  * @param {boolean} special - whether or not special characters were included
- * @param {Array<string>} additionalChar - a list of modifications made to the password, with + representing
- *                         an additional character and - representing a removal
  */
 const getPossibilities = (
+  originalPassword: string,
   password: string,
   numWords: number,
   randomCasing: boolean,
   numbers: boolean,
   special: boolean,
-  additionalChar: Array<string>,
 ): number => {
   const kerckhoff = getKerckhoffsPossibilities(
+    originalPassword,
     password,
     numWords,
     randomCasing,
     numbers,
     special,
-    additionalChar,
   );
   const random = getRandomPossibilities(password);
   return Math.min(kerckhoff, random);
